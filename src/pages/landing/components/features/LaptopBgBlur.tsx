@@ -8,15 +8,15 @@ import LaptopBG2 from "./LaptopBG2";
 
 const LaptopBgBlur = ({ className }: { className: string }) => {
   return (
-    <div className={`flex items-center justify-center blur-sm 4 ${className} `}>
+    <div className={`flex items-center justify-center ${className} `}>
       <LaptopBG2>
-        <InstructorCard className="!w-[50%] min-w-[100px]" />
-        <div className="grid grid-cols-1 gap-5">
-          <CallImgCard className="w-[100%] self-end justify-self-end" img={IMG2} isInstructor={false} name="Tamara" />
+        <InstructorCard className="w-full col-span-2 row-span-2 mx-auto" />
+        <div className="grid grid-cols-2 sm:grid-cols-1 gap-5">
+          <CallImgCard className="w-full" img={IMG2} isInstructor={false} name="Tamara" />
           {/* <CallImgCard className="w-[200px] justify-self-start" img={IMG4} isInstructor={false} name="Adam Levin" /> */}
-          <CallImgCard className="w-[100%] justify-self-end" img={IMG3} isInstructor={false} name="Humbert" />
-          {/* <CallImgCard className="w-[200px]" img={IMG5} isInstructor={false} name="Patricia Mendoza" /> */}
+          <CallImgCard className="w-full" img={IMG3} isInstructor={false} name="Humbert" />
         </div>
+        {/* <CallImgCard className="w-[200px]" img={IMG5} isInstructor={false} name="Patricia Mendoza" /> */}
       </LaptopBG2>
     </div>
   );

@@ -1,7 +1,7 @@
 import IMG from "../../../../assets/img/landing/HeroBg.svg";
 
 const Background = () => {
-  return <img src={IMG} alt="/" className="hidden lg:block w-full h-[100dvh] top-[100dvh] lg:top-0 inset-0 absolute" />;
+  return <img src={IMG} alt="/" className="w-[100%] max-w-none absolute -bottom-1 h-[25px] lg:h-[50px] z-[1]" />;
 };
 
 export default Background;
