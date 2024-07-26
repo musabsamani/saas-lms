@@ -2,15 +2,18 @@ import { faAngleRight, faArrowRightLong } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+import useImportImg from "../../hooks/useImportImg";
 import TestiCard from "./components/testimonials/TestiCard";
 import { testimonialsArrayTypes } from "../../types/components";
 
 
 export default function Testemonials() {
   const { t } = useTranslation()
+
   const [index, setIndex] = useState(0)
   const testimonialsArray = t('testimonials.data', { returnObjects: true }) as testimonialsArrayTypes[]
   const [testimonial, setTestimonial] = useState(testimonialsArray[0])
+  const imageSrc = useImportImg(testimonial?.img)
 
   const handleTesimonialsChange = () => {
     if (testimonialsArray[index + 1] === undefined) {
@@ -49,7 +52,7 @@ export default function Testemonials() {
           <div className="testi mx-auto max-w-[700px] w-full h-[750px]">
             <div className="relative max-w-[75%] h-fit">
               <div className="w-full aspect-[7/10]">
-                <img src={testimonial.img} alt="/" className="block w-full h-full object-cover" />
+                <img src={imageSrc} alt="/" className="block w-full h-full object-cover" />
                 {/* copyright from freepik - reference */}
                 <div className="hidden">
                   <a href="https://www.freepik.com/free-photo/doctor-with-documents-hall_1796588.htm#from_view=detail_alsolike">Image by freepik</a>
