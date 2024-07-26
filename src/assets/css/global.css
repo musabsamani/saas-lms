@@ -51,7 +51,7 @@ html[dir="rtl"] .rtl {
 }
 
 .parallax {
-  @apply translate-y-0 transition-transform duration-[3s] ease-out;
+  @apply translate-y-0 transition-transform duration-[3s] delay-300 ease-out;
 }
 
 .stickyNav {
