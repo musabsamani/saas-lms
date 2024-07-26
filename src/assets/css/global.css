@@ -1,0 +1,84 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+h1,
+h2 {
+  line-height: 1.5;
+}
+p {
+  line-height: 2;
+}
+
+.poppins {
+  font-family: "Poppins", sans-serif;
+}
+.nunito {
+  font-family: "Nunito Sans", sans-serif;
+}
+
+.roboto {
+  font-family: "Roboto", sans-serif;
+}
+
+.first-capitalize::first-letter {
+  text-transform: capitalize;
+  display: none;
+}
+
+html[dir="rtl"] .rtl {
+  transform: scaleX(-1);
+}
+
+@keyframes videoIcon {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.75);
+    opacity: 0.2;
+  }
+}
+
+.container {
+  @apply mx-auto p-3 md:p-5 lg:px-10 min-w-[300px] overflow-hidden;
+}
+
+.parallax {
+  @apply translate-y-0 transition-transform duration-[3s] delay-300 ease-out;
+}
+
+.stickyNav {
+  @apply !fixed !h-[75px] top-[-100px] w-full bg-gray-700 shadow-md;
+}
+.stickyNav .logo {
+  @apply scale-75;
+}
+
+section.section {
+  @apply py-40;
+}
+
+p {
+  @apply first-capitalize;
+}
+
+.features {
+  .dots {
+    .container {
+      span {
+        display: block;
+        border-radius: 50%;
+        background-color: #dce2ee;
+        width: 10px;
+        height: 10px;
+      }
+    }
+  }
+}

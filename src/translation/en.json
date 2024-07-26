@@ -1,0 +1,299 @@
+{
+  "translation": {
+    "navbar": {
+      "home": "home",
+      "about": "about",
+      "courses": "courses",
+      "careers": "careers",
+      "blog": "blog",
+      "login": "login",
+      "signup": "sign up"
+    },
+    "hero": {
+      "introText": {
+        "1": "Studying",
+        "2": "Online is now much easier",
+        "p1": "TOTC is an interesting platform that will teach you in more an interactive way",
+        "button": "join for free",
+        "p2": "watch how it works"
+      },
+      "cards": {
+        "1": {
+          "text": "250k",
+          "header": "assisted student"
+        },
+        "2": {
+          "text": "congratulations",
+          "header": "your admission completed"
+        },
+        "3": {
+          "text": "User experience class",
+          "header": "today at 12.00 PM",
+          "button": "join now"
+        }
+      }
+    },
+    "success": {
+      "title": "our success",
+      "description": "We are proud of the achievements we have accomplished over the years. Through the efforts of our dedicated team, we have been able to provide high-quality education to students from around the world. We constantly strive to improve our services and offer the best learning experience.",
+      "cards": {
+        "1": {
+          "number": "15k+",
+          "text": "students"
+        },
+        "2": {
+          "number": "75%",
+          "text": "total success"
+        },
+        "3": {
+          "number": "35",
+          "text": "main questions"
+        },
+        "4": {
+          "number": "26",
+          "text": "cheif experts"
+        },
+        "5": {
+          "number": "16",
+          "text": "years of experience"
+        }
+      }
+    },
+    "services": {
+      "title1": "All-In-One",
+      "title2": "Cloud Software.",
+      "description": "TOTC is one powerful online software suite that combines all the tools needed to run a successful school or office.",
+      "cards": {
+        "1": {
+          "header": "online billing, invoicing, & contracts",
+          "text": "simple and secure control of your organization’s financial and legal transactions. Send customized invoices and contracts"
+        },
+        "2": {
+          "header": "easy scheduling & attendance tracking",
+          "text": "schedule and reserve classrooms at one campus or multiple campuses. Keep detailed records of student attendance"
+        },
+        "3": {
+          "header": "customer tracking",
+          "text": "automate and track emails to individuals or groups. Skilline’s built-in system helps organize your organization "
+        }
+      }
+    },
+    "about": {
+      "title1": "What is",
+      "title2": "TOTC?",
+      "description": "TOTC is a platform that allows educators to create online classes whereby they can store the course materials online; manage assignments, quizzes and exams; monitor due dates; grade results and provide students with feedback all in one place.",
+      "cards": {
+        "1": {
+          "header": "for instructors",
+          "button": "start a class today"
+        },
+        "2": {
+          "header": "for students",
+          "button": "enter access code"
+        }
+      },
+      "span1": "everything you can do in a physical classroom,",
+      "span2": "you can do with TOTC",
+      "button": "Learn more",
+      "span3": "TOTC’s school management software helps traditional and online schools manage scheduling, attendance, payments and virtual classrooms all in one secure cloud-based system."
+    },
+    "features": {
+      "title1": "Our",
+      "title2": "Features",
+      "description": "This very extraordinary feature, can make learning activities more efficient",
+      "button": "see more features",
+      "cards": {
+        "1": {
+          "name0": "Eveny Howard",
+          "name1": "Tamara",
+          "name2": "Adam Levin",
+          "name3": "Humbert",
+          "name4": "Patricia Mendoza",
+          "button1": "preset",
+          "button2": " call"
+        },
+        "2": {
+          "title1": "a",
+          "title2": "user interface",
+          "title3": "designed for the classroom",
+          "p1": "Teachers don’t get lost in the grid view and have a dedicated Podium space.",
+          "p2": "TA’s and presenters can be moved to the front of the class.",
+          "p3": "Teachers can easily see all students and class data at one time."
+        },
+        "3": {
+          "title1": "tools",
+          "title2": "for teachers and learners",
+          "description": "class has a dynamic set of teaching tools built to be deployed and used during class. Teachers can handout assignments in real-time for students to complete and submit."
+        },
+        "4": {},
+        "5": {
+          "title": "question",
+          "questionText": "true or false? this play takes place in Italy",
+          "questionFeedback": "Your answer was sent successfully"
+        },
+        "6": {
+          "title1": "assessments,",
+          "title2": "Quizzes",
+          "title3": ", Tests",
+          "description": "easily launch live assignments, quizzes, and tests. Student results are automatically entered in the online gradebook."
+        },
+        "7": {
+          "title1": "class management",
+          "title2": "tools for educators",
+          "description": "class provides tools to help run and manage the class such as Class Roster, Attendance, and more. With the Gradebook, teachers can review and grade tests and quizzes in real-time."
+        },
+        "8": {
+          "title": "GradeBook"
+        },
+        "9": {
+          "title1": "private discussion",
+          "title2": "your video can’t be seen by others",
+          "person1": "Patricia Mendoza",
+          "button": "end discussion",
+          "description": "student tracking allows educators to easily keep track of student attendance, behavior, and scores in real-time."
+        },
+        "10": {
+          "title2": "One-on-One",
+          "title1": "Discussions",
+          "description": "teachers and teacher assistants can talk with students privately without leaving the Zoom environment."
+        }
+      }
+    },
+    "courses": {
+      "title1": "Explore Course",
+      "title2": "Ut sed eros finibus, placerat orci id, dapibus.",
+      "title": "Lorem ipsum dolor consectetur amet",
+      "description": "Lorem ipsum dolor sit amet consectetur inventore veritatis Ipsum.",
+      "seeAll": "see all",
+      "cards": {
+        "1": { "title": "Introduction to Art" },
+        "2": { "title": "Calculus for Beginners" },
+        "3": { "title": "The History of Ancient Egypt" }
+      }
+    },
+    "testimonials": {
+      "heading": "testimonial",
+      "title": "What They Say?",
+      "description": "TOTC has got more than 100k positive ratings from our users around the world. The some of the students and teachers were greatly helped by the Skilline are you too? Please give your assessment",
+      "button": "write your assessment",
+      "reviews": "reviews at Yelp",
+      "data": [
+        {
+          "img": "Testimonials0.png",
+          "name": "Gloria Rose",
+          "text": "Thank you so much for your help. It's exactly what I've been looking for. You won't regret it. It really saves me time and effort. TOTC is exactly what our business has been lacking.",
+          "reviews": 12,
+          "stars": 3
+        },
+        {
+          "img": "Testimonials1.jpg",
+          "name": "John Smith",
+          "text": "TOTC has completely surpassed our expectations. I would like to personally thank you for your outstanding product. I was amazed at the quality of TOTC.",
+          "reviews": 8,
+          "stars": 5
+        },
+        {
+          "img": "Testimonials2.jpg",
+          "name": "Emily Johnson",
+          "text": "I am really satisfied with my TOTC. It has really helped our business grow. TOTC should be nominated for service of the year. I will recommend you to my colleagues.",
+          "reviews": 15,
+          "stars": 4
+        },
+        {
+          "img": "Testimonials3.jpg",
+          "name": "Michael Brown",
+          "text": "The service was excellent. I would also like to say thank you to all your staff. The best on the net! Definitely worth the investment.",
+          "reviews": 20,
+          "stars": 5
+        },
+        {
+          "img": "Testimonials4.jpg",
+          "name": "Jessica Davis",
+          "text": "TOTC has the best tools for managing my classes online. My students love the interactive features. Great job, TOTC!",
+          "reviews": 25,
+          "stars": 4
+        },
+        {
+          "img": "Testimonials1.jpg",
+          "name": "David Wilson",
+          "text": "I couldn't have asked for more than this. TOTC did exactly what you said it does. I'm good to go. Thanks for the great service.",
+          "reviews": 5,
+          "stars": 4
+        },
+        {
+          "img": "Testimonials2.jpg",
+          "name": "Sarah Taylor",
+          "text": "The user interface is so intuitive and easy to use. TOTC has made our administrative tasks so much simpler. Highly recommended!",
+          "reviews": 18,
+          "stars": 5
+        },
+        {
+          "img": "Testimonials3.jpg",
+          "name": "Chris Martinez",
+          "text": "I love TOTC. I have gotten at least 50 times the value from TOTC. It's incredible. I will let my friends know about this.",
+          "reviews": 10,
+          "stars": 5
+        }
+      ]
+    },
+    "blogs": {
+      "title": "Lastest News and Resources",
+      "description": "See the developments that have occurred to TOTC in the world",
+      "button": "read more",
+      "data": [
+        {
+          "img": "Blog1.png",
+          "category": "Innovation",
+          "header": "Virtual Reality: The Future of Immersive Learning",
+          "text": "Virtual reality is set to revolutionize the way we learn by offering immersive experiences that engage students in a unique and interactive way. Discover how VR technology is being used in classrooms and the potential benefits it brings to the education industry.",
+          "author": "Robert Brown",
+          "date": "April 20, 2024"
+        },
+        {
+          "img": "Blog2.png",
+          "category": "Education",
+          "header": "Former Blackboard CEO Raises $16M to Bring LMS Features to Zoom Classrooms",
+          "text": "This year, investors have reaped big financial returns from betting on Zoom. The platform's integration with LMS features aims to enhance the virtual classroom experience, providing better tools for educators and students alike. The raised funds will be used to develop new functionalities that support interactive learning and seamless class management.",
+          "author": "Jane Doe",
+          "date": "July 24, 2024"
+        },
+        {
+          "img": "Blog3.png",
+          "category": "Technology",
+          "header": "AI in Education: How Machine Learning is Changing the Classroom",
+          "text": "Artificial intelligence is transforming the education sector by providing personalized learning experiences and automating administrative tasks. This article explores the latest advancements in AI technology and their impact on teaching methodologies and student engagement.",
+          "author": "John Smith",
+          "date": "June 15, 2024"
+        },
+        {
+          "img": "Blog4.png",
+          "category": "E-Learning",
+          "header": "Top 10 E-Learning Platforms for 2024",
+          "text": "With the rise of online education, choosing the right e-learning platform is crucial. This article reviews the top 10 e-learning platforms for 2024, highlighting their features, pricing, and user feedback to help educators make an informed decision.",
+          "author": "Alice Johnson",
+          "date": "May 30, 2024",
+          "className": ""
+        },
+        {
+          "img": "Blog1.png",
+          "category": "E-Learning",
+          "header": "Top 10 E-Learning Platforms for 2024",
+          "text": "With the rise of online education, choosing the right e-learning platform is crucial. This article reviews the top 10 e-learning platforms for 2024, highlighting their features, pricing, and user feedback to help educators make an informed decision.",
+          "author": "Alice Johnson",
+          "date": "May 30, 2024",
+          "className": "flex xl:hidden"
+        }
+      ]
+    },
+    "footer": {
+      "title": "Virtual Class for Zoom",
+      "subscribe": "subscribe to get our Newsletter",
+      "button": "Subscribe",
+      "list1": "Careers",
+      "list2": "Privacy Policy",
+      "list3": "Terms and Conditions",
+      "copyright": "2021 Class Technologies Inc. All rights reserved",
+      "input": "Your Email"
+    }
+  }
+}
