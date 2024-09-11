@@ -29,7 +29,7 @@ const Navbar = () => {
     const nav = navRef.current;
 
     if (nav) {
-      if (currentScroll > 1200) {
+      if (currentScroll > 400) {
         nav.classList.add('stickyNav');
 
         if (currentScroll > prevScroll) {
@@ -58,7 +58,7 @@ const Navbar = () => {
   }, [prevScroll]);
 
   return (
-    <Disclosure ref={navRef} as="nav" className="h-[100px] text-white capitalize font-medium relative z-[5] duration-300 transition-all">
+    <Disclosure ref={navRef} as="nav" className="h-[100px] text-white capitalize font-medium absolute w-full z-[5] duration-300 transition-all">
       <div className="container h-full mx-auto overflow-visible py-0">
         <div className="relative h-full flex items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center 2xl:hidden">
