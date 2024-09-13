@@ -16,7 +16,7 @@ export const handleUndefinedEndpoint = (req: Request, res: Response, next: NextF
   return res.status(404).json({
     error: {
       message: "API endpoint not found",
-      details: `Path ${req.originalUrl} not found on service ${process.env.CURRENT_TENANT_SERVICE}`,
+      details: `Path ${req.originalUrl} not found on service ${process.env.CURRENT_SERVICE_NAME}`,
     },
   });
 };
