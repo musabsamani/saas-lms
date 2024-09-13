@@ -1,0 +1,18 @@
+{
+  "name": "back-end",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start:services": "npm-run-all --parallel start-api-gateway start-tenant-service",
+    "start-api-gateway": "cd api-gateway && npm start",
+    "start-tenant-service": "cd tenant-service && npm start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
