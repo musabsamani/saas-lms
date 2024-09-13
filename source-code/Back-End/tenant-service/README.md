@@ -78,7 +78,7 @@ The `tenant-service` feature is a core part of the SaaS Learning Management Syst
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/musabsamani/E-Learning
+   git clone https://github.com/musabsamani/E-Learning.git
    ```
 
 2. Install dependencies:

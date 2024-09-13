@@ -18,7 +18,7 @@ This is the API Gateway service for the LMS SaaS application, responsible for ro
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/musabsamani/E-Learning
+git clone https://github.com/musabsamani/E-Learning.git
 ```
 
 ### 2. Navigate to the API Gateway directory
