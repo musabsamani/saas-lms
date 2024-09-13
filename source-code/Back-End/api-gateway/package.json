@@ -1,11 +1,13 @@
 {
   "name": "api-gateway",
-  "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "keywords": [],
+  "author": "Musab Samani",
+  "license": "ISC",
   "scripts": {
     "start": "nodemon src/index.ts",
     "tsc": "tsc && node dist/src/index.js",
-    "prisma": "prisma",
+    "prisma": "prisma init",
     "prisma:migrate": "npx prisma migrate dev --schema=src/data/prisma/schema.prisma  --name init",
     "prisma:generate": "npx prisma generate --schema=src/data/prisma/schema.prisma",
     "prisma:studio": "npx prisma studio --schema=src/data/prisma/schema.prisma",

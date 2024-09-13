@@ -1,5 +1,14 @@
 import winston from "winston";
 
+/**
+ * Configures logging for the Express application using Winston.
+ *
+ * This function sets up two log files, one for general information and one for exceptions.
+ *
+ * It also sets up two transports for logging to the console, one for general information and one for exceptions.
+ *
+ * The function then adds the transports to the Winston logger and sets up exception handling.
+ */
 export const logging = () => {
   const infoFile = new winston.transports.File({
     filename: "logfile.log",
