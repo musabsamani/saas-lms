@@ -14,14 +14,6 @@ interface ServiceEndpointConfig {
 }
 
 /**
- * Default route to check if the API Gateway is running.
- * Responds with a "Hello World!" message and a simple status.
- */
-router.get("/", (req: Request, res: Response) => {
-  return res.json({ message: "Hello World!", details: "API_Gateway is up and running" });
-});
-
-/**
  * Array of service endpoints and corresponding service names (service URLs).
  * These routes will forward requests to their respective microservices.
  */
@@ -40,6 +32,15 @@ const serviceEndpoints: ServiceEndpointConfig[] = [
  * @param {string} serviceUrl - The name of the microservice (e.g., "TENANT_SERVICE_URL",
  * because "TENANT_SERVICE_URL" is the URL of the tenant service from the .env file).
  */
+
+/**
+ * Default route to check if the API Gateway is running.
+ * Responds with a "Hello World!" message and a simple status.
+ */
+router.get("/", (req: Request, res: Response) => {
+  return res.json({ message: "Hello World!", details: "API_Gateway is up and running" });
+});
+
 serviceEndpoints.forEach(({ serviceEndpoint, serviceUrl }) => {
   // Forward all requests to the root of each service endpoint
   router.all(serviceEndpoint, forwardRequest({ removedPath: serviceEndpoint, serviceUrl }));

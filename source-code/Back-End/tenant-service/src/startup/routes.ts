@@ -32,7 +32,7 @@ export const routes = (app: Application) => {
   app.use(express.json());
 
   // API routes under the '/api' path
-  app.use("/api", router);
+  app.use("/api/v1", router);
 
   /**
    * Handle undefined endpoint: This middleware runs after all defined API endpoints

@@ -26,7 +26,7 @@ export const forwardRequest = ({ removedPath, serviceUrl }: { removedPath: strin
       // Forward the request to the appropriate microservice
       const response = await axios({
         method,
-        url: `${serviceUrl}/api/${req.path.replace(regex, "")}`,
+        url: `${serviceUrl}/api/v1/${req.path.replace(regex, "")}`,
         data: body,
         params,
       });
