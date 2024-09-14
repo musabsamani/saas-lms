@@ -1,50 +1,66 @@
 import { Request, Response, Router } from "express";
 import { forwardRequest } from "../controllers";
 
-export const router = Router();
+/**
+ * @constant {Router} router - The main router for the API Gateway
+ */
+export const router: Router = Router();
 
 /**
- * Interface to represent service endpoints.
- * @property {string} serviceEndpoint - The API route to forward requests for a specific service.
- * @property {string} serviceUrl - The name of the service, typically the environment variable containing the service URL.
+ * @interface {ServiceEndpointConfig} - The configuration for a service endpoint
+ * @property {string[]} endpoints - The endpoints for the service
+ * @property {string} serviceUrl - The URL of the service
  */
 interface ServiceEndpointConfig {
-  serviceEndpoint: string;
-  serviceUrl: string;
+  readonly endpoints: string[];
+  readonly serviceUrl: string;
 }
 
 /**
- * Array of service endpoints and corresponding service names (service URLs).
- * These routes will forward requests to their respective microservices.
+ * @constant {ServiceEndpointConfig[]} services - The services that the API Gateway routes to
  */
-const serviceEndpoints: ServiceEndpointConfig[] = [
-  { serviceEndpoint: "/tenants", serviceUrl: process.env.TENANT_SERVICE_URL! },
-  { serviceEndpoint: "/users", serviceUrl: process.env.USER_SERVICE_URL! },
-  { serviceEndpoint: "/auth", serviceUrl: process.env.AUTHENTICATION_SERVICE_URL! },
+const services: ServiceEndpointConfig[] = [
+  {
+    endpoints: ["/tenants", "/subscriptions", "/divisions"],
+    serviceUrl: process.env.TENANT_AND_ORGANIZATION_MANAGEMENT_SERVICE_URL!,
+  },
+  {
+    endpoints: ["/auth", "/roles", "/users"],
+    serviceUrl: process.env.IDENTITY_AND_ACCESS_MANAGEMENT_SERVICE_URL!,
+  },
+  {
+    endpoints: ["/notifications", "/chat"],
+    serviceUrl: process.env.COMMUNICATION_AND_NOTIFICATION_SERVICE_URL!,
+  },
+  {
+    endpoints: ["/content", "/quiz", "/progress", "/enrollments"],
+    serviceUrl: process.env.LEARNING_AND_ASSESSMENT_MANAGEMENT_SERVICE_URL!,
+  },
 ];
 
 /**
- * Maps through the `serviceEndpoints` array and creates routes for each service.
- * - Forwards requests from `/serviceEndpoint` to the respective microservice.
- * - Forwards requests from `/serviceEndpoint/*` (sub-paths) to the respective microservice.
- *
- * @param {string} serviceEndpoint - The API endpoint (e.g., "/tenants", "/users").
- * @param {string} serviceUrl - The name of the microservice (e.g., "TENANT_SERVICE_URL",
- * because "TENANT_SERVICE_URL" is the URL of the tenant service from the .env file).
+ * @function routeToServices - Routes the API Gateway to the services
+ * @param {ServiceEndpointConfig[]} services - The services to route to
  */
+function routeToServices(services: ServiceEndpointConfig[]) {
+  services.forEach(({ endpoints, serviceUrl }) => {
+    endpoints.forEach((endpoint) => {
+      router.all(endpoint, forwardRequest(serviceUrl));
+    });
+  });
+}
 
 /**
- * Default route to check if the API Gateway is running.
- * Responds with a "Hello World!" message and a simple status.
+ * @description The root endpoint of the API Gateway
+ * @param {Request} req - The request object
+ * @param {Response} res - The response object
  */
 router.get("/", (req: Request, res: Response) => {
   return res.json({ message: "Hello World!", details: "API_Gateway is up and running" });
 });
 
-serviceEndpoints.forEach(({ serviceEndpoint, serviceUrl }) => {
-  // Forward all requests to the root of each service endpoint
-  router.all(serviceEndpoint, forwardRequest({ removedPath: serviceEndpoint, serviceUrl }));
+/**
+ * @description Routes the API Gateway to the services
+ */
 
-  // Forward all requests to sub-paths under each service endpoint
-  router.all(`${serviceEndpoint}/*`, forwardRequest({ removedPath: `${serviceEndpoint}/`, serviceUrl }));
-});
+routeToServices(services);
