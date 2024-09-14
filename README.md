@@ -6,179 +6,243 @@
 
 ## Overview
 
-This project is a **Learning Management System (LMS)** built using a **microservices architecture** with **React** and **Next.js** for the frontend, **Node.js** and **Express.js** for the backend services **PostgreSQL** for the database with **Prisma** as the ORM, and **TypeScript** for type safety,
-The system supports **multitenancy** using a shared database structure with tenant IDs.
+This project is a **Learning Management System (LMS)** built using a **microservices architecture**. The frontend uses **React** and **Next.js** for a dynamic user interface, while the backend consists of various microservices built with **Node.js** and **Express.js**. **PostgreSQL** is used as the database, managed through **Prisma** ORM, and the system employs **TypeScript** for type safety. The application supports **multitenancy** using a shared database structure with tenant IDs.
 
-The backend is divided into microservices to handle specific features like **user management**, **tenant management**, and **API gateway** for routing and communication between services.
+The backend is divided into the following microservices:
+
+- **API Gateway**
+- **Identity and Access Management**
+- **Tenant Management and Organization Management**
+- **Learning and Assessment Management**
+- **Communication and Notification**
 
 ## Features
 
-- **Microservices Architecture**: The system is divided into independent services for scalability and maintainability.
-- **Multitenancy**: Supports multiple tenants with tenant-specific data management.
-- **RBAC**: Role-Based Access Control for user permissions.
-- **Prisma ORM**: Provides database management and query abstraction with PostgreSQL.
-- **API Gateway**: Centralized entry point for routing requests between different services.
-- **Dockerized Environment**: The application is containerized for easier deployment and scaling.
-
-## Architecture
-
-The system follows a **microservices architecture** with the following services:
-
-- **API Gateway**: Handles all incoming requests and routes them to the appropriate service.
-- **Authentication Service**: Manages token-based authentication using JWT.
-- **Tenant Service**: Handles tenant management, including subscription and status tracking.
-- **User Service**: Manages user registration, authentication, and RBAC.
-
-Each service is connected to a **shared PostgreSQL database** with **Prisma** managing migrations and database schema.
-
-## Services Overview
-
-### 1. API Gateway
-
-- Acts as a central point for communication between frontend and backend services.
-
-### 2. Authentication Service
-
-- Manages authentication logic.
-- Issues JWT tokens upon successful login.
-- Verifies token authenticity in request headers.
-- Routes requests to the appropriate service.
-- Handles global error handling and request validation.
-
-### 3. Tenant Service
-
-- Manages tenant-related functionalities, including creating and updating tenant information.
-- Validates subscription types and status.
-- Ensures proper multitenant data isolation using tenant IDs.
-
-### 4. User Service
-
-- Manages users, roles, and permissions.
-- Supports JWT-based authentication.
-- Provides endpoints for user management (e.g., registration, login).
+- **Microservices Architecture**: The system is split into independent services for scalability and maintainability.
+- **Multitenancy**: Supports multiple tenants with isolated data management using tenant IDs.
+- **RBAC**: Role-Based Access Control for secure user permissions management.
+- **API Gateway**: Centralized entry point for routing requests to appropriate services.
+- **Prisma ORM**: Manages database schema and migrations with PostgreSQL.
+- **Dockerized Environment**: Containerized for easy deployment and scaling.
 
 ## Technologies Used
 
-- **Frontend**: React with Next.js and TypeScript
-- **Backend**: Node.js with Express.js, TypeScript
+- **Frontend**: React with Next.js, TypeScript
+- **Backend**: Node.js, Express.js, TypeScript
 - **Database**: PostgreSQL with Prisma ORM
 - **Authentication**: JWT-based authentication and OAuth
-- **Containerization**: Docker
+- **Containerization**: Docker for isolated environment setup
 - **API Gateway**: Centralized API entry point
-- **Multitenancy**: Single database with tenant-based data isolation
-- **RBAC**: Role-Based Access Control
+- **RBAC**: Role-Based Access Control for managing user permissions
 
 ## Installation
 
-To run the project locally:
+### Prerequisites
 
-1. Clone the repository:
+- **Node.js** (>= v14.x)
+- **Prisma** (>= 4.x)
+- **PostgreSQL** (for the database)
+- **Docker** (for containerized deployment)
 
-   ```bash
-   git clone https://github.com/musabsamani/E-Learning.git
-   ```
+### 1. Clone the Repository
 
-2. Navigate to the project directory:
+```bash
+git clone https://github.com/musabsamani/E-Learning.git
+```
 
-   ```bash
-   cd source-code/Back-End
-   ```
+### 2. Navigate to the Project Directory
 
-3. Install dependencies for each service (api-gateway, tenant-service, user-service):
+```bash
+cd E-Learning/source-code/Back-End
+```
 
-   ```bash
-   cd <service_directory>
-   npm install
-   ```
+### 3. Install Dependencies
 
-4. Set up environment variables:
-   - Copy `.env.example` to `.env` in each service directory and provide the necessary values.
+Install the dependencies for all backend services:
 
-5. Start the services using Docker Compose:
+```bash
+npm run install:all
+```
 
-   ```bash
-   docker-compose up
-   ```
+### 4. Set Up Environment Variables
 
-## Database Setup
+Create a `.env` file in each service directory and provide the necessary values. You can use `.env.example` as a reference.
 
-- The database schema is managed with Prisma.
-- Migrations are located in the `src/data/prisma/migrations` directory of each service.
-- To apply migrations:
+```bash
+cp services/api_gateway/.env.example services/api_gateway/.env
+```
 
-  ```bash
-  npx prisma migrate deploy
-  ```
+### 5. Set Up the Database
 
-## Running the Application
+Ensure your PostgreSQL database is running and accessible. Update the `DATABASE_URL` in each service's `.env` file to reflect your database configuration.
 
-1. **Start the API Gateway**:
-   - Run `npm start` in the **api-gateway** directory.
+### 6. Run Database Migrations
 
-2. **Start User, Tenant Services, and other services**:
-   - Run `npm start` in each service directories.
+Apply the Prisma migrations to set up the database schema:
 
-3. The frontend `React` can be served separately or integrated with the backend.
+```bash
+npm run prisma:all
+```
+
+### 7. Running the Application
+
+To start all services in development mode:
+
+```bash
+npm run start:all
+```
 
 ## Development
 
 ### Prisma ORM
 
-- Prisma is used for schema management, migrations, and querying the PostgreSQL database.
-- To generate Prisma client after making schema changes:
+- Prisma is used to manage the database schema and run queries.
+- To generate the Prisma client after modifying the schema:
 
   ```bash
   npx prisma generate
   ```
 
-### Running Tests
+### Running the Frontend
 
-- Unit and integration tests are located in the `tests` folder of each service.
-- To run tests:
+The frontend of the LMS is built with React and Next.js and can be served separately. Navigate to the frontend directory to install dependencies and run the application:
 
-  ```bash
-  npm test
-  ```
+```bash
+cd source-code/Front-End
+npm install
+npm run dev
+```
 
-## Docker
+## Running the Application
 
-- The project is dockerized for ease of deployment.
-- Ensure Docker is installed and running on your machine.
-- Use the following command to build and start the containers:
+### Accessing Services
 
-  ```bash
-  docker-compose up --build
-  ```
+The services are accessible at the ports specified in their `.env` files. The API Gateway will route requests to the appropriate microservices.
+
+### Docker
+
+The application is fully containerized for easier deployment. To build and run the containers, ensure Docker is installed and running on your machine, then execute:
+
+```bash
+docker-compose up --build
+```
 
 ## Folder Structure
 
-```
+```text
 source-code/
 │
 ├── Back-End/
 │   ├── api-gateway/
 │   ├── tenant-service/
 │   ├── user-service/
+│   ├── identity_and_access_management/
+│   ├── learning_and_assessment_management/
+│   ├── communication_and_notification/
 │   └── docker-compose.yml
 │
 ├── Front-End/
-│   └── React-based frontend for the LMS
+│   ├── React-based frontend for the LMS
+│   └── package.json
 │
 └── README.md
 ```
 
-## Contribution
+## Available Scripts
 
-Contributions are welcome! Please follow the following guidelines:
+The backend services have the following scripts available:
 
-- Fork the repository.
-- Create a new branch for your feature or bug fix.
-- Submit a pull request with a detailed description of the changes.
+- **Install All Dependencies**:
+
+  ```bash
+  npm run install:all
+  ```
+
+  Installs dependencies for all services in the `services/*` directory.
+
+- **Build All Services**:
+
+  ```bash
+  npm run build:all
+  ```
+
+  Compiles TypeScript files for all services.
+
+- **Start All Services**:
+
+  ```bash
+  npm run start:all
+  ```
+
+  Runs all services in parallel using Nodemon for live reloading in development mode.
+
+- **Prisma Migrations**:
+
+  ```bash
+  npm run prisma:all
+  ```
+
+  Applies Prisma migrations for all services' databases.
+
+- **Prisma Studio**:
+
+  ```bash
+  npm run prisma:studio
+  ```
+
+  Opens Prisma Studio for the API Gateway's database management.
+
+- **Run Tests**:
+
+  ```bash
+  npm test
+  ```
+
+  Placeholder script for running tests.
+
+## Contributing
+
+We welcome contributions! Please follow these steps:
+
+1. **Fork the Repository**
+
+2. **Create a Feature Branch**
+
+   ```bash
+   git checkout -b feature/YourFeature
+   ```
+
+3. **Commit Your Changes**
+
+   ```bash
+   git commit -m 'Add new feature'
+   ```
+
+4. **Push to the Branch**
+
+   ```bash
+   git push origin feature/YourFeature
+   ```
+
+5. **Open a Pull Request**
+
+## Testing
+
+Run the tests using the following command:
+
+```bash
+npm test
+```
+
+Ensure that all new features are covered by appropriate unit and integration tests.
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the **ISC License**.
 
 ## Contact
 
-For any questions or issues, please feel free to contact the maintainers at: <musab0124887085@gmail.com>
+For questions or support, please contact:
+
+- **Email**: [musab0124887085@gmail.com](mailto:musab0124887085@gmail.com)
+- **GitHub Issues**: [GitHub Issues Page](https://github.com/musabsamani/E-Learning/issues)

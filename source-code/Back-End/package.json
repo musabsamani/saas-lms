@@ -1,17 +1,41 @@
 {
   "name": "back-end",
   "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "start:services": "npm-run-all --parallel start-api-gateway start-tenant-service",
-    "start-api-gateway": "cd api-gateway && npm start",
-    "start-tenant-service": "cd tenant-service && npm start",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [],
-  "author": "",
+  "author": "Musab Samani",
   "license": "ISC",
   "description": "",
+  "workspaces": [
+    "services/*"
+  ],
+  "scripts": {
+    "install:all": "npm-run-all install-service-1 install-service-2 install-service-3 install-service-4 install-service-5",
+    "build:all": "npm-run-all --parallel build-service-1 build-service-2 build-service-3 build-service-4 build-service-5",
+    "prisma:studio": "cd services/api_gateway && npm run prisma:studio",
+    "prisma:all": "npm-run-all --parallel prisma-service-1 prisma-service-2 prisma-service-3 prisma-service-4 prisma-service-5",
+    "start:all": "npm-run-all --parallel start-service-1 start-service-2 start-service-3 start-service-4 start-service-5",
+    "install-service-1": "cd services/api_gateway && npm install",
+    "install-service-2": "cd services/identity_and_access_management && npm install",
+    "install-service-3": "cd services/tenant_and_organization_management && npm install",
+    "install-service-4": "cd services/learning_and_assessment_management && npm install",
+    "install-service-5": "cd services/communication_and_notification && npm install",
+    "build-service-1": "cd services/api_gateway && npm run build",
+    "build-service-2": "cd services/identity_and_access_management && npm run build",
+    "build-service-3": "cd services/tenant_and_organization_management && npm run build",
+    "build-service-4": "cd services/learning_and_assessment_management && npm run build",
+    "build-service-5": "cd services/communication_and_notification && npm run build",
+    "start-service-1": "cd services/api_gateway && npm start",
+    "start-service-2": "cd services/identity_and_access_management && npm start",
+    "start-service-3": "cd services/tenant_and_organization_management && npm start",
+    "start-service-4": "cd services/learning_and_assessment_management && npm start",
+    "start-service-5": "cd services/communication_and_notification && npm start",
+    "prisma-service-1": "cd services/api_gateway && npm run prisma:deploy",
+    "prisma-service-2": "cd services/identity_and_access_management && npm run prisma:deploy",
+    "prisma-service-3": "cd services/tenant_and_organization_management && npm run prisma:deploy",
+    "prisma-service-4": "cd services/learning_and_assessment_management && npm run prisma:deploy",
+    "prisma-service-5": "cd services/communication_and_notification && npm run prisma:deploy",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "devDependencies": {
     "npm-run-all": "^4.1.5"
   }

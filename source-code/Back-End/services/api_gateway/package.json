@@ -1,18 +1,18 @@
 {
-  "name": "tenant-service",
+  "name": "api-gateway-service",
   "version": "1.0.0",
   "keywords": [],
   "author": "Musab Samani",
   "license": "ISC",
   "scripts": {
-    "start": "nodemon src/index.ts",
+    "build": "tsc",
+    "dev": "nodemon src/index.ts",
+    "start": "node dist/src/index.js",
     "tsc": "tsc && node dist/src/index.js",
-    "prisma": "prisma init",
     "prisma:generate": "npx prisma generate --schema=src/data/prisma/schema.prisma",
     "prisma:migrate": "npx prisma migrate dev --schema=src/data/prisma/schema.prisma  --name init",
-    "prisma:studio": "npx prisma studio --schema=src/data/prisma/schema.prisma",
-    "build": "tsc",
-    "preview": "vite preview"
+    "prisma:deploy": "npx prisma migrate deploy --schema=src/data/prisma/schema.prisma",
+    "prisma:studio": "npx prisma studio --schema=src/data/prisma/schema.prisma"
   },
   "description": "",
   "devDependencies": {
