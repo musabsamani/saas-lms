@@ -4,15 +4,14 @@
   "keywords": [],
   "author": "Musab Samani",
   "license": "ISC",
+  "prisma": {
+    "schema": "src/data/prisma/schema"
+  },
   "scripts": {
     "build": "tsc",
     "dev": "nodemon src/index.ts",
     "start": "node dist/src/index.js",
-    "tsc": "tsc && node dist/src/index.js",
-    "prisma:generate": "npx prisma generate --schema=src/data/prisma/schema.prisma",
-    "prisma:migrate": "npx prisma migrate dev --schema=src/data/prisma/schema.prisma  --name init",
-    "prisma:deploy": "npx prisma migrate deploy --schema=src/data/prisma/schema.prisma",
-    "prisma:studio": "npx prisma studio --schema=src/data/prisma/schema.prisma"
+    "tsc": "tsc && node dist/src/index.js"
   },
   "description": "",
   "devDependencies": {
