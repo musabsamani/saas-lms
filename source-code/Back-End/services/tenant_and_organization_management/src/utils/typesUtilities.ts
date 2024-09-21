@@ -13,3 +13,12 @@ type removeNullableFields<T> = {
  * @param T Type representing the interface to make its all nullable fields optional
  */
 export type makeNullFieldsOptional<T> = removeNullableFields<T> & removeRequiredMakeNullableOptional<T>;
+
+/**
+ * @description A utility type that makes all properties of a given type `T` nullable.
+ *
+ * @template T - The type whose properties will be made nullable.
+ */
+export type Nullable<T> = {
+  [P in keyof T]: T[P] | null;
+};

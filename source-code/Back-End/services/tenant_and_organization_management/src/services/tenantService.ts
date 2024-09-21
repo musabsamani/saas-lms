@@ -1,8 +1,12 @@
 import { Prisma, PrismaClient, Tenant } from "@prisma/client";
 import { HttpError } from "../errors/httpError";
-import { createTenantData, updateTenantDTO } from "../interfaces";
-import { tenantResponseDTO } from "../interfaces";
+import { createTenantData, updateTenantDTO } from "../interfaces/tenants";
+import { tenantResponseDTO } from "../interfaces/tenants";
 import { handleDatabaseError } from "../utils/handleDatabaseErrors";
+import dotenv from "dotenv";
+
+// Load environment variables from .env file
+dotenv.config();
 
 // Instantiate Prisma Client
 const prisma = new PrismaClient();

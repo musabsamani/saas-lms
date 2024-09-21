@@ -1,0 +1,48 @@
+// tenant.prisma
+model Tenant {
+    // Basic fields
+    id Int @id @default(autoincrement()) // Unique ID for each tenant
+
+    // Required Tenant details
+    name                String // Name of the tenant (organization)
+    subscriptionType    SubscriptionType   @default(FREE) // Enum to track subscription type
+    subscriptionStatus  SubscriptionStatus @default(ACTIVE) // Enum to track subscription status
+    subscriptionEndDate DateTime // End date for the current subscription
+
+    // Metadata fields for auditing and soft deletion
+    version   Int      @default(0) // for versioning (optimistic locking)
+    createdAt DateTime @default(now()) // Timestamp for when the tenant was created
+    updatedAt DateTime @updatedAt // Automatically updated when the tenant is updated
+
+    // Optional Tenant details
+    trialEndDate DateTime? // End date for the trial period (optional)
+    email        String?   @unique // The primary email of the tenant (organization)
+    phone        String?   @unique // The primary phone number of the tenant (organization)
+    website      String?   @unique // Tenant's website (optional)
+    address      String? // Address of the tenant's organization
+    city         String? // City of the tenant
+    state        String? // State or region
+    postalCode   String? // Postal or ZIP code
+    country      String? // Country of the tenant
+
+    // Relationships
+    // An array of Division objects representing all top level divisions under the tenant.
+    division Division[]
+}
+
+// Enum to track subscription status
+enum SubscriptionStatus {
+    TRIAL
+    ACTIVE
+    INACTIVE
+    SUSPENDED
+    CANCELLED
+}
+
+// Enum to track subscription type
+enum SubscriptionType {
+    FREE
+    BASIC
+    PREMIUM
+    ENTERPRISE
+}

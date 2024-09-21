@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
-import { TenantService } from "../services";
-import { createTenantData, createTenantRequestDTO, updateTenantDTO } from "../interfaces";
-import { HttpError } from "../errors/httpError";
+import { Request, response, Response } from "express";
+import { TenantService } from "../services/tenantService";
+import { createTenantData, createTenantRequestDTO, tenantResponseDTO, updateTenantDTO } from "../interfaces/tenants";
 import { handleControllerError } from "../utils/handleContollerErrors";
+import { createResponseObject } from "../utils/createResponseObject";
 
 // Instantiate the tenant service
 const tenantService = new TenantService();
@@ -19,7 +19,7 @@ export const getTenants = async (req: Request, res: Response): Promise<Response>
     const tenants = await tenantService.getTenants();
 
     // Respond with the list of tenants
-    return res.status(200).json({ data: tenants });
+    return res.status(200).json(createResponseObject<tenantResponseDTO>({ data: tenants }));
   } catch (error) {
     // Handle any errors that occur during the retrieval of tenants
     return handleControllerError({ res, error, defaultErrorMessage: "Failed to retrieve tenants" });
@@ -28,7 +28,7 @@ export const getTenants = async (req: Request, res: Response): Promise<Response>
 
 /**
  * Controller function to get a tenant by ID
- * @param req Express Request object
+ * @param req Express Request object containing the tenant ID in the path parameters
  * @param res Express Response object
  * @returns A Express Response object with the retrieved tenant
  */
@@ -37,14 +37,11 @@ export const getTenantById = async (req: Request, res: Response): Promise<Respon
     // Extract tenant ID from request parameters
     const tenantId = Number(req.params.id);
 
-    // Check if tenant ID is provided
-    if (!tenantId) throw new HttpError({ message: "Missing tenant ID in request parameters", statusCode: 400 });
-
     // Call the database service to get the tenant by ID
     const tenant = await tenantService.getTenantById(tenantId);
 
     // Respond with the tenant data if found
-    return res.status(200).json({ data: tenant });
+    return res.status(200).json(createResponseObject<tenantResponseDTO>({ data: tenant }));
   } catch (error) {
     // Handle any errors that occur during the retrieval of a tenant
     return handleControllerError({ res, error, defaultErrorMessage: "Failed to retrieve tenant" });
@@ -72,7 +69,7 @@ export const createTenant = async (req: Request, res: Response): Promise<Respons
     const newTenant = await tenantService.createTenant(tenantData);
 
     // Respond with the newly created tenant data
-    return res.status(201).json(newTenant);
+    return res.status(201).json(createResponseObject<tenantResponseDTO>({ data: newTenant }));
   } catch (error) {
     // Handle any errors that occur during the creation of a tenant
     return handleControllerError({ res, error, defaultErrorMessage: "Failed to create tenant" });
@@ -81,7 +78,7 @@ export const createTenant = async (req: Request, res: Response): Promise<Respons
 
 /**
  * Controller function to update a tenant
- * @param req Express Request object
+ * @param req Express Request object containing the tenant ID in the path parameters
  * @param res Express Response object
  * @returns A Express Response object with the updated tenant
  */
@@ -92,10 +89,9 @@ export const updateTenant = async (req: Request, res: Response): Promise<Respons
 
     // Extract tenant data from request parameters
     const updateData: updateTenantDTO = req.body;
-    if (tenantId !== req.body.id) throw new HttpError({ message: "id in request parameters and request body do not match", statusCode: 400 });
     // Call the database service to update the tenant
     const updatedTenant = await tenantService.updateTenant(tenantId, updateData);
-    return res.status(200).json({ data: updatedTenant });
+    return res.status(200).json(createResponseObject<tenantResponseDTO>({ data: updatedTenant }));
   } catch (error) {
     // Handle any errors that occur during the update of a tenant
     return handleControllerError({ res, error, defaultErrorMessage: "Failed to update tenant" });
@@ -104,7 +100,7 @@ export const updateTenant = async (req: Request, res: Response): Promise<Respons
 
 /**
  * Controller function to delete a tenant
- * @param req Express Request object
+ * @param req Express Request object containing the tenant ID in the path parameters
  * @param res Express Response object
  * @returns A Express Response object with the deleted tenant
  */
@@ -115,7 +111,7 @@ export const deleteTenant = async (req: Request, res: Response): Promise<Respons
 
     // Call the database service to delete the tenant
     const deletedTenant = await tenantService.deleteTenant(tenantId);
-    return res.status(200).json({ message: "Tenant deleted successfully", data: deletedTenant });
+    return res.status(200).json(createResponseObject<tenantResponseDTO>({ data: { message: "Tenant deleted successfully", data: deletedTenant } }));
   } catch (error) {
     // Handle any errors that occur during the deletion of a tenant
     return handleControllerError({ res, error, defaultErrorMessage: "Failed to delete tenant" });
