@@ -12,9 +12,9 @@ import { authMiddleware } from "../middlewares/authMiddleware";
  */
 const router: Router = Router();
 
-router.use("/api/v1/tenants", tenantRouter);
-router.use("/api/v1/subscriptions", subscriptionRouter);
-router.use("/api/v1/divisions", authMiddleware, divisionRouter);
+router.use("/tenants", tenantRouter);
+router.use("/subscriptions", subscriptionRouter);
+router.use("/divisions", authMiddleware, divisionRouter);
 router.use(healthCheckRouter);
 
 export { router };

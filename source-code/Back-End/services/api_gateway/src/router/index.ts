@@ -11,5 +11,6 @@ import { router as greeting } from "./greeting";
  */
 export const router: Router = Router();
 
-router.use("/api/v1", routeToServices);
+router.use(routeToServices);
+
 router.use(greeting);

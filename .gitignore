@@ -1,12 +1,21 @@
+# enviroment variables
+.env
+
+# prisma migrations
+migrations
+
+
 # Logs
 logs
 *.log
 npm-debug.log*
+package-lock.json
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# build and development folders
 node_modules
 dist
 dist-ssr

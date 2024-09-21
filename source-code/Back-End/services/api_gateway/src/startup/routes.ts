@@ -33,8 +33,8 @@ export const routes = async (app: Application) => {
     // Middleware to parse JSON bodies
     app.use(express.json());
 
-    // API routes under the '/api' path
-    app.use(router);
+    // API routes under the '/api/v1' path
+    app.use("/api/v1", router);
 
     /**
      * Handle undefined endpoint: This middleware runs after all defined API endpoints

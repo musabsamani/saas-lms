@@ -14,7 +14,7 @@ import { HttpError } from "../errors/httpError";
  */
 export const checkServiceHealth = async (serviceUrl: string): Promise<void> => {
   try {
-    await axios.get(`${serviceUrl}`);
+    await axios.get(`${serviceUrl}/api/v1`);
   } catch (err) {
     const error = err as AxiosError;
     const message = "Unreachable service: Error forwarding request to microservice";
