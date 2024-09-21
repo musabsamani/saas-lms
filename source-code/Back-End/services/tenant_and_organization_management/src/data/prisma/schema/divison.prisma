@@ -1,0 +1,21 @@
+model Division {
+    id       Int @id @default(autoincrement()) // Unique ID for each division
+    tenantId Int // Foreign key to the Tenant model
+
+    name String // Name of the division
+
+    parentId    Int? // Nullable to represent root divisions
+    description String? // Description of the division
+
+    version   Int      @default(0) // for versioning (optimistic locking)
+    createdAt DateTime @default(now()) // Timestamp for when the division was created
+    updatedAt DateTime @updatedAt // Automatically updated when the division is updated
+
+    // Relations
+    // An optional self-relation where a Division can have a parent Division.
+    parent   Division?  @relation("DivisionHierarchy", fields: [parentId], references: [id])
+    // An array of Division objects representing all the child divisions under a parent Division.
+    children Division[] @relation("DivisionHierarchy")
+
+    Tenant Tenant @relation(fields: [tenantId], references: [id])
+}

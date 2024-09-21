@@ -1,3 +1,4 @@
+import { HttpError } from "../errors/httpError";
 import { NextFunction, Request, Response } from "express";
 
 /**
@@ -11,12 +12,12 @@ import { NextFunction, Request, Response } from "express";
  * @param {NextFunction} next - The Express NextFunction callback to move to the next middleware.
  * @returns {Response | void} A 400 error response if validation fails, otherwise calls next().
  */
-export function validateIdParams(req: Request, res: Response, next: NextFunction): Response | void {
-  const tenantId = Number(req.params.id);
+export function IsValidIdParams(req: Request, res: Response, next: NextFunction): Response | void {
+  const id = Number(req.params.id);
 
   // Validate if the tenantId is a number and is greater than 0
-  if (isNaN(tenantId) || tenantId <= 0) {
-    return res.status(400).json({ error: { message: "Invalid id in request parameters" } });
+  if (isNaN(id) || id <= 0) {
+    throw new HttpError({ message: "Invalid id in request parameters", statusCode: 400 });
   }
 
   next();
