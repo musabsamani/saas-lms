@@ -1,5 +1,12 @@
-import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
+import { NextFunction, Request, Response } from "express";
+import { createResponseObject } from "../utils/createResponseObject";
+
+const joiValidationErrorToMessage = (error: Joi.ValidationError) => {
+  let arr: string[] = [];
+  error.details.map((detail) => arr.push(detail.message));
+  return arr;
+};
 
 /**
  * Middleware to validate the request body using a Joi schema.
@@ -10,12 +17,14 @@ import Joi from "joi";
  *
  * @param {Joi.Schema} validationSchema - The Joi schema to validate the request body against.
  * A middleware function that validates the request body.
+ * @returns The middleware function which validates the request body. and returns the response or throws an error.
+ * @throws {Error} If the request body does not conform to the schema or the request body is empty.
  */
 export function validateRequestBody(validationSchema: Joi.Schema) {
   return (req: Request, res: Response, next: NextFunction): Response | void => {
     // Check if the request body is empty
     if (Object.keys(req.body).length === 0) {
-      return res.status(400).json({ error: { message: "Empty request body", statusCode: 400 } });
+      return res.status(400).json(createResponseObject({ error: { message: "Empty request body" } }));
     }
 
     // Validate the request body against the schema
@@ -25,7 +34,7 @@ export function validateRequestBody(validationSchema: Joi.Schema) {
 
     if (error) {
       // If validation fails, return the error details to the client
-      return res.status(400).json({ error: { message: "Validation error", details: error.details } });
+      return res.status(400).json(createResponseObject({ error: { message: "Validation error", details: joiValidationErrorToMessage(error) } }));
     }
 
     // If validation succeeds, assign the validated value to the request body

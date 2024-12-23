@@ -13,6 +13,7 @@ import { Application } from "express";
  */
 
 export const production = (app: Application) => {
+  if (process.env.NODE_ENV !== "production") return;
   app.use(helmet());
   app.use(compression());
 };

@@ -3,9 +3,9 @@ import { getAllDivision, getTenantDivisionHierarchy, createDivision, getTenantDi
 import { createDivisionSchema, updateDivisionSchema } from "../validations/divisionValidationSchemas";
 import { validateRequestBody } from "../middlewares/validateRequestBody";
 import { IsValidIdParams } from "../middlewares/IsValidIdParams";
-import { authIsAdmin } from "../middlewares/authIsAdmin";
+import { isAuthorized } from "../middlewares/isAuthorized";
 import { validateReqParamsIdMatch } from "../middlewares/validateReqParamsIdMatch";
-import { validateJWTReqTenantIdMatch } from "../middlewares/validateJWTReqTenantIdMatch";
+import { validateTenantIdMatch } from "../middlewares/validateTenantIdMatch";
 
 /**
  * Express router to handle division-related routes.
@@ -38,7 +38,7 @@ const router: Router = Router();
  * @returns {Promise<Response>} 200 - The division object if found.
  * @returns {Promise<Response>} 500 - An error occurred while fetching the division.
  */
-router.get("/all", authIsAdmin, getAllDivision);
+router.get("/all", isAuthorized({ allowedRoles: ["saasOwner"] }), getAllDivision);
 
 /**
  * Retrieves a tenant's division hierarchy as a nested structure of divisions
@@ -52,7 +52,7 @@ router.get("/all", authIsAdmin, getAllDivision);
  * @returns {Promise<Response>} 404 - Tenant not found.
  * @returns {Promise<Response>} 500 - An error occurred while fetching the division hierarchy.
  */
-router.get("/tenants/hierarchy/:id", [IsValidIdParams, validateJWTReqTenantIdMatch("params")], getTenantDivisionHierarchy);
+router.get("/tenants/hierarchy/:id", [IsValidIdParams, validateTenantIdMatch], getTenantDivisionHierarchy);
 
 /**
  * GET /api/divisions/tenants/:id
@@ -67,7 +67,7 @@ router.get("/tenants/hierarchy/:id", [IsValidIdParams, validateJWTReqTenantIdMat
  * @returns {Promise<Response>} 404 - Tenant not found.
  * @returns {Promise<Response>} 500 - An error occurred while fetching divisions for a tenant.
  */
-router.get("/tenants/:id", [IsValidIdParams, validateJWTReqTenantIdMatch("params")], getTenantDivisionList);
+router.get("/tenants/:id", [IsValidIdParams, validateTenantIdMatch], getTenantDivisionList);
 
 /**
  * GET /api/divisions/:id
@@ -83,7 +83,7 @@ router.get("/tenants/:id", [IsValidIdParams, validateJWTReqTenantIdMatch("params
  * @returns {Promise<Response>} 404 - Division not found.
  * @returns {Promise<Response>} 500 - An error occurred while fetching the division.
  */
-router.get("/:id", [IsValidIdParams, validateJWTReqTenantIdMatch("body")], getDivisionById);
+router.get("/:id", [IsValidIdParams, validateTenantIdMatch], getDivisionById);
 
 /**
  * POST /api/divisions
@@ -98,7 +98,7 @@ router.get("/:id", [IsValidIdParams, validateJWTReqTenantIdMatch("body")], getDi
  * @returns {Promise<Response>} 400 - Bad request: Validation error, missing or incorrect division data.
  * @returns {Promise<Response>} 500 - An error occurred while creating the division.
  */
-router.post("/", [validateJWTReqTenantIdMatch("body"), validateRequestBody(createDivisionSchema)], createDivision);
+router.post("/", [validateTenantIdMatch, validateRequestBody(createDivisionSchema)], createDivision);
 
 /**
  * PUT /api/divisions/:id
@@ -115,7 +115,7 @@ router.post("/", [validateJWTReqTenantIdMatch("body"), validateRequestBody(creat
  * @returns {Promise<Response>} 404 - Division not found.
  * @returns {Promise<Response>} 500 - An error occurred while updating the division.
  */
-router.put("/:id", [IsValidIdParams, validateReqParamsIdMatch, validateJWTReqTenantIdMatch("body"), validateRequestBody(updateDivisionSchema)], updateDivision);
+router.put("/:id", [IsValidIdParams, validateReqParamsIdMatch, validateTenantIdMatch, validateRequestBody(updateDivisionSchema)], updateDivision);
 
 /**
  * DELETE /api/divisions/:id
@@ -130,6 +130,6 @@ router.put("/:id", [IsValidIdParams, validateReqParamsIdMatch, validateJWTReqTen
  * @returns {Promise<Response>} 404 - Division not found.
  * @returns {Promise<Response>} 500 - An error occurred while deleting the division.
  */
-router.delete("/:id", [IsValidIdParams, validateJWTReqTenantIdMatch("body")], deleteDivision);
+router.delete("/:id", [IsValidIdParams, validateTenantIdMatch], deleteDivision);
 
 export { router };

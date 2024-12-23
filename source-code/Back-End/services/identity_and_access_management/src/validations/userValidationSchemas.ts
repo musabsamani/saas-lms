@@ -1,76 +1,62 @@
 import Joi from "joi";
-import { subscriptionStatusArray, subscriptionTypesArray } from "../constants";
 
-//! These Joi validation schemas in this file should be in sync with
-//! the tenant DTOs and interfaces in file `/src/interfaces/index.ts`.
+// Define the required fields for creating a user
+const userRequiredFields = {
+  name: Joi.string().required(),
+  tenantId: Joi.number().required(),
+  email: Joi.string().email().required(),
+  // Prohibits '@' in username
+  username: Joi.string()
+    .pattern(/^[^@]*$/)
+    .required(),
+  password: Joi.string().min(6).required(),
+};
 
-/**
- * Joi validation schema for optional fields of a tenant.
- *
- * This schema includes:
- * 1. Fields required by the database but optional for the controller, as they can be set by the controller.
- * 2. Optional fields for the tenant that are allowed to be null or undefined.
- *
- * - `name`: Optional string.
- * - `subscriptionType`: Optional string, must be one of the allowed subscription types.
- * - `subscriptionStatus`: Optional string, must be one of the allowed subscription statuses.
- * - `trialEndDate`: Optional date for when the trial ends.
- * - `subscriptionEndDate`: Optional date for when the subscription ends.
- * - `email`: Optional string, must be a valid email format.
- * - `phone`: Optional string, can be null.
- * - `address`: Optional string, can be null.
- * - `city`: Optional string, can be null.
- * - `state`: Optional string, can be null.
- * - `postalCode`: Optional string, can be null.
- * - `country`: Optional string, can be null.
- * - `website`: Optional string, must be a valid URI format, can be null.
- */
-const tenantOptionalFields = {
-  name: Joi.string().optional(),
-  subscriptionType: Joi.string()
-    .valid(...subscriptionTypesArray)
-    .optional(),
-  subscriptionStatus: Joi.string()
-    .valid(...subscriptionStatusArray)
-    .optional(),
-  trialEndDate: Joi.date().optional(),
-  subscriptionEndDate: Joi.date().optional(),
+// Create optional fields for updating a user by making the required fields optional
+const userOptionalFieldsForUpdate = Object.keys(userRequiredFields).reduce((acc, key) => {
+  // Cast acc to the correct type: Record<string, Joi.Schema>
+  acc[key as keyof typeof userRequiredFields] = userRequiredFields[key as keyof typeof userRequiredFields].optional();
+  return acc;
+}, {} as Record<keyof typeof userRequiredFields, Joi.Schema>);
 
-  // Optional tenant details
-  email: Joi.string().email().optional().allow(null),
+// Define additional optional fields for both creating and updating a user
+const additionalOptionalFields = {
   phone: Joi.string().optional().allow(null),
   address: Joi.string().optional().allow(null),
-  city: Joi.string().optional().allow(null),
-  state: Joi.string().optional().allow(null),
-  postalCode: Joi.string().optional().allow(null),
-  country: Joi.string().optional().allow(null),
-  website: Joi.string().uri().optional().allow(null),
+  sex: Joi.string().optional().allow(null),
+  birthday: Joi.date().optional().allow(null),
+  profileImageUrl: Joi.string().optional().allow(null),
 };
 
 /**
- * Joi validation schema for creating a tenant.
+ * Joi validation schema for creating a user.
  *
- * This schema is used by the controller to validate the request body when creating a tenant.
- *
- * - `name`: Required string representing the tenant's name.
- * - Optional fields from `tenantOptionalFields` are included.
+ * This schema is used by the controller to validate the request body when creating a user.
  */
-export const createTenantSchema = Joi.object({
-  ...tenantOptionalFields,
-  name: Joi.string().required(),
+export const createUserSchema = Joi.object({
+  ...userRequiredFields,
+  ...additionalOptionalFields,
 });
 
 /**
- * Joi validation schema for updating a tenant.
+ * Joi validation schema for updating a user.
  *
- * This schema is used by the controller to validate the request body when updating a tenant.
- *
- * - `id`: Required number representing the unique ID of the tenant.
- * - `version`: Required number for optimistic locking, indicating the current version of the tenant.
- * - Optional fields from `tenantOptionalFields` are included.
+ * This schema is used by the controller to validate the request body when updating a user.
  */
-export const updateTenantSchema = Joi.object({
-  ...tenantOptionalFields,
+export const updateUserSchema = Joi.object({
+  ...userOptionalFieldsForUpdate,
+  ...additionalOptionalFields,
   id: Joi.number().required(),
-  version: Joi.number().required(),
+  updatedAt: Joi.date().required(),
+});
+
+/**
+ * Joi validation schema for logging in a user.
+ *
+ * This schema is used by the controller to validate the request body when logging in a user.
+ */
+export const loginUserSchema = Joi.object({
+  tenantId: userRequiredFields.tenantId,
+  emailOrUsername: Joi.alternatives().try(userRequiredFields.email, userRequiredFields.username).required().label("Email or Username"),
+  password: userRequiredFields.password,
 });

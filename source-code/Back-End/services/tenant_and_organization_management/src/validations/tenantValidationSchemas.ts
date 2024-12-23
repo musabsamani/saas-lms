@@ -72,5 +72,5 @@ export const createTenantSchema = Joi.object({
 export const updateTenantSchema = Joi.object({
   ...tenantOptionalFields,
   id: Joi.number().required(),
-  version: Joi.number().required(),
+  updatedAt: Joi.date().required(),
 });

@@ -13,13 +13,13 @@ const prisma = new PrismaClient();
 /**
  * Interface to check if tenant exists
  *
- * @interface checkIfTenantExistsInterface
+ * @interface isTenantExistsInterface
  * @property {number} id - The ID of the tenant to check
  * @property {object} [errorOptions] - The error object to throw if the tenant does not exist
  * @property {string} [errorOptions.message] - The error message to throw
  * @property {number} [errorOptions.statusCode] - The HTTP status code to throw
  */
-interface checkIfTenantExistsInterface {
+interface isTenantExistsInterface {
   id: number;
   errorOptions?: {
     message?: string;
@@ -67,6 +67,8 @@ const divisionListToHierarchy = (originalDivisions: divisionResponseDTO[]): divi
       const parent = divisionMap[division.parentId];
       if (parent) {
         parent.children.push(extendedDivision);
+        // } else {
+        // throw new HttpError({ message: `Foreign key constraint failed: Parent division not found with id: ${division.parentId} and tenantId: ${division.tenantId}`, statusCode: 400 });
       }
     }
   });
@@ -110,7 +112,7 @@ export class DivisionService {
   public async getTenantDivisionList(tenantId: number): Promise<divisionResponseDTO[] | never> {
     try {
       // check if tenant exists
-      await this.checkIfTenantExists({ id: tenantId });
+      await this.isTenantExists({ id: tenantId });
 
       // Retrieve all divisions related to the tenant
       const divisions = await prisma.division.findMany({ where: { tenantId } });
@@ -132,9 +134,9 @@ export class DivisionService {
   public async getDivisionById({ divisionId, tenantId }: { tenantId: number; divisionId: number }): Promise<divisionResponseDTO | never> {
     try {
       // check if tenant exists
-      await this.checkIfTenantExists({ id: tenantId });
+      await this.isTenantExists({ id: tenantId });
 
-      const division = await this.checkIfDivisionExists({ divisionId, tenantId });
+      const division = await this.isDivisionExists({ divisionId, tenantId });
 
       return division;
     } catch (error) {
@@ -150,7 +152,7 @@ export class DivisionService {
   public async createDivision(data: createDivisionData): Promise<divisionResponseDTO | never> {
     try {
       // check if tenant exists
-      await this.checkIfTenantExists({
+      await this.isTenantExists({
         id: data.tenantId,
         errorOptions: {
           message: `Invalid data: Tenant with id: ${data.tenantId} not found`,
@@ -162,11 +164,12 @@ export class DivisionService {
       let parentDivision: divisionResponseDTO | null = null;
 
       // get parent division
-      if (data.parentId) parentDivision = await prisma.division.findUnique({ where: { tenantId: data.tenantId, id: data.parentId } });
+      if (data.parentId) {
+        parentDivision = await prisma.division.findUnique({ where: { tenantId: data.tenantId, id: data.parentId } });
 
-      // check if parent division exists
-      if (!parentDivision) throw new HttpError({ message: `Foreign key constraint failed: Parent division not found with id: ${data.parentId} and tenantId: ${data.tenantId}`, statusCode: 400 });
-
+        // check if parent division exists
+        if (!parentDivision) throw new HttpError({ message: `Foreign key constraint failed: Parent division not found with id: ${data.parentId} and tenantId: ${data.tenantId}`, statusCode: 400 });
+      }
       return await prisma.division.create({ data });
     } catch (error) {
       handleDatabaseError("Could not create division", error);
@@ -182,7 +185,7 @@ export class DivisionService {
   public async updateDivision(data: updateDivisionDTO): Promise<divisionResponseDTO | never> {
     try {
       // check if tenant exists
-      await this.checkIfTenantExists({ id: data.tenantId });
+      await this.isTenantExists({ id: data.tenantId });
 
       // Check if the record does not exists
       const existingDivision = await prisma.division.findUnique({ where: { id: data.id, tenantId: data.tenantId } });
@@ -191,18 +194,12 @@ export class DivisionService {
       }
 
       // Check if the record has not been modified by another process
-      if (existingDivision.version !== data.version) {
+      if (existingDivision.updatedAt.toString() !== data.updatedAt.toString()) {
         throw new HttpError({ message: "Version conflict: The record has been modified by another process", statusCode: 409 });
       }
 
-      const updatedDivision = await prisma.division.update({
-        where: { id: data.id, tenantId: data.tenantId },
-        data: {
-          ...data,
-          // Increment the version on successful update
-          version: { increment: 1 },
-        },
-      });
+      const { updatedAt, ...newdata } = { ...data };
+      const updatedDivision = await prisma.division.update({ where: { id: data.id, tenantId: data.tenantId }, data: newdata });
 
       return updatedDivision;
     } catch (error) {
@@ -218,7 +215,7 @@ export class DivisionService {
   public async deleteDivision({ tenantId, divisionId }: { tenantId: number; divisionId: number }): Promise<Division | never> {
     try {
       // check if tenant exists
-      await this.checkIfTenantExists({ id: tenantId });
+      await this.isTenantExists({ id: tenantId });
 
       const deletedDivision = await prisma.division.delete({ where: { id: divisionId, tenantId } });
 
@@ -238,7 +235,7 @@ export class DivisionService {
    * @throws {HttpError} If the tenant does not exist, with a 404 status code
    */
 
-  private async checkIfTenantExists({ id, errorOptions }: checkIfTenantExistsInterface) {
+  private async isTenantExists({ id, errorOptions }: isTenantExistsInterface) {
     // Retrieve the tenant
     const tenant = await prisma.tenant.findUnique({ where: { id } });
 
@@ -250,7 +247,7 @@ export class DivisionService {
       });
   }
 
-  private async checkIfDivisionExists({ divisionId, tenantId }: { divisionId: number; tenantId: number }) {
+  private async isDivisionExists({ divisionId, tenantId }: { divisionId: number; tenantId: number }) {
     // Retrieve the division
     const division = await prisma.division.findUnique({ where: { id: divisionId, tenantId } });
 

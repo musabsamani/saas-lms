@@ -12,51 +12,55 @@ export function handleDatabaseError(message: string, error: unknown): never {
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
     switch (error?.code) {
       case "P2025":
-        const notFoundField = (error.meta && (error.meta.cause as string)) || "unknown field";
+        const entity = (error.meta && (error.meta?.modelName as string)) || "unknown field";
+        // const cause = (error.meta && (error.meta?.cause as string)) || "Please ensure the resource exists.";
         // Record not found error
         throw new HttpError({
           stack: error.stack,
           code: error?.code,
           details: error.message,
-          message: `Record not found for the field: ${notFoundField}. Please ensure the resource exists.`,
+          message: `Record not found for the entity: ${entity}`,
+          // message: `Record not found for the entity: ${entity}.\n Cause: ${cause}`,
           statusCode: 404,
         });
 
       case "P2002":
         // Unique constraint violation
-        const uniqueFields = (error.meta && (error.meta.target as string[])) || [];
+
+        let uniqueFields = error.meta && error.meta.target && Array.isArray(error.meta.target) ? error.meta.target : [];
+        uniqueFields = uniqueFields.filter((field) => field !== "tenantId");
         throw new HttpError({
           stack: error.stack,
           code: error?.code,
           details: error.message,
-          message: `Unique constraint failed on fields: ${uniqueFields.join(", ")}`,
+          message: `Unique constraint failed on fields: ${uniqueFields}`,
           statusCode: 400,
         });
 
       case "P2003":
         // Foreign key constraint violation
-        const foreignKeyFields = (error.meta && (error.meta.target as string[])) || [];
+        const foreignKeyFields = error.meta && (error.meta?.field_name as string[]);
         throw new HttpError({
           stack: error.stack,
           code: error?.code,
           details: error.message,
-          message: `Foreign key constraint failed on fields: ${foreignKeyFields.join(", ")}`,
+          message: `Foreign key constraint failed on fields: ${foreignKeyFields}`,
           statusCode: 400,
         });
 
       case "P2016":
-        const queryFields = (error.meta && (error.meta.field_name as string[])) || [];
+        const queryFields = (error.meta && (error.meta?.field_name as string[])) || [];
         // Query engine error - related to unexpected data
         throw new HttpError({
           stack: error.stack,
           code: error?.code,
           details: error.message,
-          message: `Query returned unexpected data. Affected fields: ${queryFields.join(", ")}`,
+          message: `Query returned unexpected data. Affected fields: ${queryFields}`,
           statusCode: 500,
         });
 
       case "P2017":
-        const relationField = (error.meta && (error.meta.field_name as string)) || "unknown relation field";
+        const relationField = (error.meta && (error.meta?.field_name as string)) || "unknown relation field";
         // Record does not exist at all (in relation fields)
         throw new HttpError({
           stack: error.stack,
@@ -67,18 +71,18 @@ export function handleDatabaseError(message: string, error: unknown): never {
         });
 
       case "P2018":
-        const missingRelationFields = (error.meta && (error.meta.field_name as string[])) || [];
+        const missingRelationFields = (error.meta && (error.meta?.field_name as string[])) || [];
         // Required relation missing
         throw new HttpError({
           stack: error.stack,
           code: error?.code,
           details: error.message,
-          message: `Required relation missing in the provided data. Affected fields: ${missingRelationFields.join(", ")}`,
+          message: `Required relation missing in the provided data. Affected fields: ${missingRelationFields}`,
           statusCode: 400,
         });
 
       case "P2022":
-        const missingColumn = (error.meta && (error.meta.column_name as string)) || "unknown column";
+        const missingColumn = (error.meta && (error.meta?.column_name as string)) || "unknown column";
         // Column not found in database
         throw new HttpError({
           stack: error.stack,

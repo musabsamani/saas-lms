@@ -66,6 +66,6 @@ export interface createDivisionRequestDTO extends createDivisionData {}
  */
 export interface updateDivisionDTO extends Partial<divisionDataWithoutAudit> {
   id: number;
-  version: number;
+  updatedAt: Date;
   tenantId: number;
 }

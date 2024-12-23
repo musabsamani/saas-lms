@@ -7,8 +7,9 @@ import { production } from "./startup/production";
 import { routes } from "./startup/routes";
 
 const app: Application = express();
-const PORT = Number(process.env.CURRENT_SERVICE_PORT) || 3000;
 const SERVICE_NAME = process.env.CURRENT_SERVICE_NAME;
+const PORT = Number(process.env[`${SERVICE_NAME}_PORT`]) || 3000;
+
 export let server: Server;
 try {
   /**

@@ -1,5 +1,9 @@
 import { Router } from "express";
+import dotenv from "dotenv";
 import { forwardRequest } from "../controllers";
+import { apiUrls } from "../config";
+
+dotenv.config();
 
 /**
  * @constant {Router} router - The main router for the API Gateway. Routes requests to different microservices
@@ -18,23 +22,24 @@ interface ServiceEndpointConfig {
 
 /**
  * @constant {ServiceEndpointConfig[]} services - The list of services that the API Gateway routes to.
+ * which are a collection of endpoints and the URL of their corresponding service.
  */
 const services: ServiceEndpointConfig[] = [
   {
     endpoints: ["/tenants", "/subscriptions", "/divisions"],
-    serviceUrl: process.env.TENANT_AND_ORGANIZATION_MANAGEMENT_SERVICE_URL!,
+    serviceUrl: apiUrls.tenantAndOrganizationManagementService!,
   },
   {
     endpoints: ["/auth", "/roles", "/users"],
-    serviceUrl: process.env.IDENTITY_AND_ACCESS_MANAGEMENT_SERVICE_URL!,
+    serviceUrl: apiUrls.identityAndAccessManagementService!,
   },
   {
     endpoints: ["/notifications", "/chat"],
-    serviceUrl: process.env.COMMUNICATION_AND_NOTIFICATION_SERVICE_URL!,
+    serviceUrl: apiUrls.communicationAndNotificationService!,
   },
   {
     endpoints: ["/content", "/quiz", "/progress", "/enrollments"],
-    serviceUrl: process.env.LEARNING_AND_ASSESSMENT_MANAGEMENT_SERVICE_URL!,
+    serviceUrl: apiUrls.learningAndAssessmentManagementService!,
   },
 ];
 
@@ -44,7 +49,9 @@ const services: ServiceEndpointConfig[] = [
  */
 services.forEach(({ endpoints, serviceUrl }) => {
   endpoints.forEach((endpoint) => {
+    // Define a route for each endpoint with the exact root path eg: `/api/v1/users`
     router.all(endpoint, forwardRequest(serviceUrl));
+    // Define a route for each endpoint with sub-paths eg: `/api/v1/users/:id`
     router.all(endpoint + "/*", forwardRequest(serviceUrl));
   });
 });

@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import winston from "winston";
+import { createResponseObject } from "../utils/createResponseObject";
+import { HttpError } from "../errors/httpError";
 
 /**
  * Express error-handling middleware to handle any uncaught errors in the application.
@@ -13,15 +15,13 @@ import winston from "winston";
  * @param {NextFunction} next - The Express NextFunction callback (unused but required).
  * @returns {Response} - The Express Response object with the error details.
  */
-export const errorMiddleware = (err: Error, req: Request, res: Response, next: NextFunction): Response => {
+export const errorMiddleware = (err: Error, req: Request, res: Response): Response => {
   // Log the error details using Winston
-  winston.error({ message: err.message, stack: err.stack });
 
+  winston.error({ message: err.message, stack: err.stack });
+  if (err instanceof HttpError) {
+    return res.status(err?.statusCode || 500).json(createResponseObject({ error: { message: err.message || "Internal server error" } }));
+  }
   // Respond with a 500 status code and error details
-  return res.status(500).json({
-    error: {
-      message: "Internal server error",
-      details: err.message,
-    },
-  });
+  return res.status(500).json(createResponseObject({ error: { message: "Internal server error", details: err.message } }));
 };

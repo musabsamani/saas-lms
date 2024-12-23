@@ -2,14 +2,16 @@ import winston from "winston";
 import express, { Application } from "express";
 import { Server } from "http";
 import { logging } from "./startup/logging";
-import { database } from "./startup/database";
 import { production } from "./startup/production";
 import { routes } from "./startup/routes";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app: Application = express();
-const PORT = Number(process.env.CURRENT_SERVICE_PORT) || 3000;
-
 const SERVICE_NAME = process.env.CURRENT_SERVICE_NAME;
+const PORT = Number(process.env[`${SERVICE_NAME}_PORT`]) || 3000;
+
 export let server: Server;
 try {
   /**
@@ -21,17 +23,12 @@ try {
   logging();
 
   /**
-   * Establishes a connection to the PostgreSQL database using Prisma.
-   *
-   * This function connects to the database, logs the connection status,
-   * and ensures that the Prisma client disconnects when the process ends.
-   */
-  database();
-
-  /**
    * Configures routes and middleware for the application.
    *
    * This function sets up the API routes, error handling, and middleware
+   * such as CORS and body parsers for handling incoming requests.
+   *
+   * @param {Application} app - The Express application instance.
    */
   routes(app);
 

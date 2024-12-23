@@ -1,4 +1,9 @@
 import { NextFunction, Request, Response } from "express";
+import dotenv from "dotenv";
+import { createResponseObject } from "../utils/createResponseObject";
+
+// Load environment variables from .env file
+dotenv.config();
 
 /**
  * This middleware catch requests to undefined endpoints.
@@ -13,10 +18,12 @@ import { NextFunction, Request, Response } from "express";
  */
 
 export const handleUndefinedEndpoint = (req: Request, res: Response, next: NextFunction): Response => {
-  return res.status(404).json({
-    error: {
-      message: "API endpoint not found",
-      details: `Path ${req.originalUrl} not found on service ${process.env.CURRENT_SERVICE_NAME}`,
-    },
-  });
+  return res.status(404).json(
+    createResponseObject({
+      error: {
+        message: "API endpoint not found",
+        details: `Path ${req.originalUrl} not found on service ${process.env.CURRENT_SERVICE_NAME}`,
+      },
+    })
+  );
 };

@@ -31,5 +31,5 @@ export const createDivisionSchema = Joi.object({
 export const updateDivisionSchema = Joi.object({
   ...divisionBasicFields,
   id: Joi.number().required(),
-  version: Joi.number().required(),
+  updatedAt: Joi.date().required(),
 });

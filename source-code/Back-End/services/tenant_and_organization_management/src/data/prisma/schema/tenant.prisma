@@ -10,7 +10,6 @@ model Tenant {
     subscriptionEndDate DateTime // End date for the current subscription
 
     // Metadata fields for auditing and soft deletion
-    version   Int      @default(0) // for versioning (optimistic locking)
     createdAt DateTime @default(now()) // Timestamp for when the tenant was created
     updatedAt DateTime @updatedAt // Automatically updated when the tenant is updated
 

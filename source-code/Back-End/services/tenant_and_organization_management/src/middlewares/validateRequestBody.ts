@@ -2,7 +2,11 @@ import Joi from "joi";
 import { NextFunction, Request, Response } from "express";
 import { createResponseObject } from "../utils/createResponseObject";
 
-const joiValidationErrorToMessage = (error: Joi.ValidationError) => error.details.map((detail) => `${detail.message}\n`);
+const joiValidationErrorToMessage = (error: Joi.ValidationError) => {
+  let arr: string[] = [];
+  error.details.map((detail) => arr.push(detail.message));
+  return arr;
+};
 
 /**
  * Middleware to validate the request body using a Joi schema.

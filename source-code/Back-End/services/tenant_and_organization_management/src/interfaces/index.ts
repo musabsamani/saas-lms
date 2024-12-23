@@ -20,16 +20,21 @@ export interface HealthCheckResponse {
  *
  * The tenantId field is used to store the tenant ID of the authenticated user.
  * It is set by the authentication middleware and is used to authorize requests
- * to the Division and Tenant controllers.
+ * to the Division and User controllers.
  *
  * @interface customRequest
  * @extends Request
  */
 export interface customRequest extends Request {
-  // The tenant ID of the authenticated user
-  tenantId?: number;
+  user?: {
+    // The tenant ID of the authenticated user
+    tenantId?: number;
 
-  // The userRole of the authenticated user
-  // roles include: user, SaaS Admin
-  userRole?: "saasAdmin" | "user";
+    // The JWT token of the authenticated user
+    token?: string;
+
+    // The userRole of the authenticated user
+    // roles include: user, SaaS Owner
+    userRole?: "saasOwner" | "user";
+  };
 }

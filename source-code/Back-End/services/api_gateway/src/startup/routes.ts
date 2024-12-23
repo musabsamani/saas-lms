@@ -1,10 +1,12 @@
 import express, { Application } from "express";
+import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import cors from "cors";
 import { errorMiddleware } from "../middlewares/errorMiddleware";
 import { router } from "../router";
 import { handleUndefinedEndpoint } from "../middlewares/handleUndefinedEndpoint";
 import winston from "winston";
+import { apiUrls } from "../config";
 
 /**
  * Configures the Express application with middleware, API routes, and error handling.
@@ -21,8 +23,11 @@ import winston from "winston";
  */
 export const routes = async (app: Application) => {
   try {
+    // Middleware to parse cookies
+    app.use(cookieParser());
+
     // Enable CORS for all routes
-    app.use(cors());
+    app.use(cors({ origin: apiUrls.baseUrl, credentials: true }));
 
     // Log HTTP requests in 'dev' mode using Morgan
     app.use(morgan("dev"));

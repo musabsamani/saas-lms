@@ -32,6 +32,7 @@ export class TenantService {
   public async getTenantById(tenantId: number): Promise<tenantResponseDTO | never> {
     try {
       const tenant = await prisma.tenant.findUnique({ where: { id: tenantId } });
+      console.log("req.user");
       if (!tenant) throw new HttpError({ message: "Tenant not found", statusCode: 404 });
       return tenant;
     } catch (error) {
@@ -61,23 +62,20 @@ export class TenantService {
   public async updateTenant(tenantId: number, data: updateTenantDTO): Promise<tenantResponseDTO | never> {
     try {
       const existingTenant = await prisma.tenant.findUnique({ where: { id: tenantId } });
-      if (existingTenant && existingTenant.version !== data.version) {
-        throw new HttpError({ message: "Version conflict: The record has been modified by another process", statusCode: 409 });
-      }
 
-      const updatedTenant = await prisma.tenant.update({
-        where: { id: tenantId },
-        data: {
-          ...data,
-          version: { increment: 1 }, // Increment the version on successful update
-        },
-      });
-
-      // Check if the update was unsuccessful
-      if (!updatedTenant) {
+      // Check if the tenant exists
+      if (!existingTenant) {
         // Throw an error if the record does not exist
         throw new HttpError({ message: "Tenant not found", statusCode: 404 });
       }
+
+      if (existingTenant.updatedAt.toString() !== data.updatedAt.toString()) {
+        throw new HttpError({ message: "Version conflict: The record has been modified by another process", statusCode: 409 });
+      }
+
+      const { updatedAt, ...newdata } = { ...data };
+      const updatedTenant = await prisma.tenant.update({ where: { id: tenantId }, data: newdata });
+
       return updatedTenant;
     } catch (error) {
       handleDatabaseError("Could not update tenant", error);

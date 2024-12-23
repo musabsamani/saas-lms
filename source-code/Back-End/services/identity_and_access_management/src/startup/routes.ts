@@ -1,9 +1,11 @@
 import express, { Application } from "express";
+import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import cors from "cors";
 import { errorMiddleware } from "../middlewares/errorMiddleware";
-import { router } from "../router";
 import { handleUndefinedEndpoint } from "../middlewares/handleUndefinedEndpoint";
+import { router } from "../router";
+import { apiUrls } from "../config";
 
 /**
  * Configures the Express application with middleware, API routes, and error handling.
@@ -19,8 +21,11 @@ import { handleUndefinedEndpoint } from "../middlewares/handleUndefinedEndpoint"
  * @param {Application} app - The Express application instance.
  */
 export const routes = (app: Application) => {
+  // Middleware to parse cookies
+  app.use(cookieParser());
+
   // Enable CORS for all routes
-  app.use(cors());
+  app.use(cors({ origin: apiUrls.baseUrl, credentials: true }));
 
   // Log HTTP requests in 'dev' mode using Morgan
   app.use(morgan("dev"));
@@ -31,7 +36,7 @@ export const routes = (app: Application) => {
   // Middleware to parse JSON bodies
   app.use(express.json());
 
-  // API routes under the '/api' path
+  // All API routes
   app.use("/api/v1", router);
 
   /**

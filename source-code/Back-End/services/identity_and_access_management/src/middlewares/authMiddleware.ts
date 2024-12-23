@@ -1,21 +1,38 @@
-import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
+import { Response, NextFunction } from "express";
+import { createResponseObject } from "../utils/createResponseObject";
+import { extractTokenFromHeader, verifyToken } from "../utils/jwt";
+import { isValidTenantId } from "../utils/isValidTenantId";
+import { HttpError } from "../errors/httpError";
+import { customRequest } from "../interfaces";
+import { ROLES } from "../config/roles";
 
-dotenv.config();
-
-export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers["authorization"]?.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({ message: "Authentication token is missing" });
-  }
-
+export const authMiddleware = async (req: customRequest, res: Response, next: NextFunction) => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    (req as any).user = decoded;
-    return next();
+    // req.user = req.headers.user ? JSON.parse(req.headers.user as string) : null;
+
+    const token = extractTokenFromHeader(req);
+
+    const decodedToken = verifyToken(token);
+
+    // Determine where the tenantId should come from based on the user role
+    const tenantId = decodedToken.userRole === ROLES.SAAS_OWNER ? req.body.tenantId : decodedToken.tenantId;
+
+    // // check the tenantId if user is not a saasOwner
+    // if (decodedToken.userRole !== ROLES.SAAS_OWNER) {
+    //   await isValidTenantId(tenantId, token);
+    // }
+
+    // // check the tenantId if it is present in the request body and user is saasOwner
+    // if (decodedToken.userRole === ROLES.SAAS_OWNER && req.body.tenantId) {
+    //   await isValidTenantId(tenantId, token, true);
+    // }
+    req.user = { tenantId: Number(tenantId), userRole: decodedToken.userRole, permissions: decodedToken.permissions, token };
+
+    return next(); // Pass control to the next middleware/handler
   } catch (error) {
-    return res.status(403).json({ message: "Invalid token" });
+    if (error instanceof HttpError) {
+      return res.status(error.statusCode || 401).json(createResponseObject({ error: { message: "Unauthorized", details: error.message } }));
+    }
+    return res.status(401).json(createResponseObject({ error: { message: "Unauthorized" } }));
   }
 };

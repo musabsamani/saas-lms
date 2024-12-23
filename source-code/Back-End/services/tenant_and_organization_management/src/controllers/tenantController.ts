@@ -3,6 +3,7 @@ import { TenantService } from "../services/tenantService";
 import { createTenantData, createTenantRequestDTO, tenantResponseDTO, updateTenantDTO } from "../interfaces/tenants";
 import { handleControllerError } from "../utils/handleContollerErrors";
 import { createResponseObject } from "../utils/createResponseObject";
+import { customRequest } from "../interfaces";
 
 // Instantiate the tenant service
 const tenantService = new TenantService();
@@ -32,7 +33,7 @@ export const getTenants = async (req: Request, res: Response): Promise<Response>
  * @param res Express Response object
  * @returns A Express Response object with the retrieved tenant
  */
-export const getTenantById = async (req: Request, res: Response): Promise<Response> => {
+export const getTenantById = async (req: customRequest, res: Response): Promise<Response> => {
   try {
     // Extract tenant ID from request parameters
     const tenantId = Number(req.params.id);

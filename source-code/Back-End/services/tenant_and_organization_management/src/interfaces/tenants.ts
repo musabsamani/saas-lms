@@ -64,5 +64,5 @@ export interface createTenantRequestDTO extends Omit<createTenantData, subscript
  */
 export interface updateTenantDTO extends Partial<tenantDataWithoutAudit> {
   id: number;
-  version: number;
+  updatedAt: Date;
 }
